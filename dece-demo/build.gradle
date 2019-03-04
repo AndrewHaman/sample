@@ -1,0 +1,69 @@
+//plugins {
+//	id 'org.springframework.boot' version '2.1.3.RELEASE'
+//	id 'java'
+//}
+//
+//apply plugin: 'io.spring.dependency-management'
+//
+//group = 'com.dece'
+//version = '0.0.1-SNAPSHOT'
+//sourceCompatibility = '1.8'
+//
+//repositories {
+//	mavenCentral()
+//}
+//
+//dependencies {
+//	implementation 'org.springframework.boot:spring-boot-starter-web'
+//	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+//}
+
+
+
+
+buildscript {
+	ext {
+		springBootVersion     = "1.5.2.RELEASE"
+		gradleDockerVersion   = "1.2"
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("se.transmode.gradle:gradle-docker:${gradleDockerVersion}")
+	}
+}
+
+apply plugin: "java"
+apply plugin: "application"
+apply plugin: "eclipse"
+apply plugin: "org.springframework.boot"
+apply plugin: 'docker'
+
+compileJava {
+	sourceCompatibility = 1.8
+	targetCompatibility = 1.8
+	mainClassName       = "com.dece.decedemo.DeceDemoApplication"
+}
+
+jar {
+	baseName = "docker-demo"
+	group    = "com.dece"
+	version  = "0.0.1-SNAPSHOT"
+	manifest { attributes "Main-Class": "com.dece.decedemo.DeceDemoApplication" }
+}
+
+docker {
+	baseImage "frolvlad/alpine-oraclejdk8:slim"
+	maintainer 'Andrew Haman "andrew.haman@yahoo.com"'
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	compile("org.springframework.boot:spring-boot-starter-web")
+	testCompile("org.springframework.boot:spring-boot-starter-test")
+}
